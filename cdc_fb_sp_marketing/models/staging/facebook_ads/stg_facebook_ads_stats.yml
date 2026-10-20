@@ -1,0 +1,35 @@
+version: 2
+
+models:
+  - name: stg_facebook_ads_stats
+    description: >
+      Daily performance of each Facebook ad, one row per ad per day.
+      Numbers and dates are cast to real types and the text 'null' becomes a
+      real NULL. Spend is in the currency of the ad account (see
+      stg_facebook_accounts), not yet converted to USD.
+    columns:
+      - name: ad_id
+        description: >
+          Identifier of the ad. Kept as text. Repeats across rows (one row per
+          ad per day), so it is not unique on its own; ad_id + ad_date is.
+          Joins to stg_facebook_ads.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_facebook_ads')
+                field: ad_id
+      - name: account_id
+        description: Ad account billed for this row. Joins to stg_facebook_accounts.
+      - name: spend
+        description: Amount spent that day, in the ad account's currency.
+        data_tests: [non_negative]
+      - name: impressions
+        description: Times the ad was shown that day. NULL means the source did not report it.
+        data_tests: [non_negative]
+      - name: clicks
+        description: Clicks on the ad that day. NULL means the source did not report it.
+        data_tests: [non_negative]
+      - name: ad_date
+        description: Calendar date of the activity.
+        data_tests: [not_null]

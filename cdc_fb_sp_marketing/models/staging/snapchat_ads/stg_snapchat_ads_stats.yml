@@ -1,0 +1,49 @@
+version: 2
+
+models:
+  - name: stg_snapchat_ads_stats
+    description: >
+      Daily performance of Snapchat ads (2,809 rows). Cleaned copy of the raw
+      stats: text trimmed, numbers and dates cast to real types, currency and
+      country upper-cased. Only link to the rest of the hierarchy is ad_id.
+    columns:
+      - name: ad_id
+        description: >
+          The ad this row belongs to. Renamed from ad_detail_id so it matches
+          ad_id in ad_history and in the Facebook models. Repeats across rows
+          (one ad, many days).
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_snapchat_ad_history')
+                field: ad_id
+      - name: ad_currency_code
+        description: Currency the spend is in. Each stats row carries its own currency.
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['USD', 'EUR']
+      - name: ad_country
+        description: Country the ad was shown in, upper-cased.
+      - name: spend
+        description: Amount spent, in the currency of the row. Decimal with 6 places.
+        data_tests: [non_negative]
+      - name: impressions
+        description: Number of times the ad was shown.
+        data_tests: [non_negative]
+      - name: clicks
+        description: >
+          Number of clicks. NULL for 111 rows where the raw file had the text
+          'null' (not the same as a real zero).
+        data_tests: [non_negative]
+      - name: ad_date
+        description: The day the numbers are for.
+        data_tests: [not_null]
+      - name: data_source
+        description: Where the row came from, as given in the raw file.
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['snapchat_ads']

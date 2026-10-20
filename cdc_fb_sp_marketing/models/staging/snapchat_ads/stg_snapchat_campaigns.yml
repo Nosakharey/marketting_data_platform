@@ -1,0 +1,22 @@
+version: 2
+
+models:
+  - name: stg_snapchat_campaigns
+    description: >
+      One row per Snapchat campaign (109 rows). Cleaned copy of campaign_history
+      with text trimmed. This is the only Snapchat table that carries account_id,
+      so it is the link from a campaign up to its account.
+    columns:
+      - name: campaign_id
+        description: Unique id of the campaign. Primary key of this table.
+        data_tests: [unique, not_null] 
+      - name: account_id
+        description: >
+          The account that owns the campaign. One account has many campaigns,
+          so this value repeats across rows (2 accounts in the data).
+        data_tests: [not_null]
+      - name: campaign_name
+        description: Name given to the campaign.
+
+     
+       

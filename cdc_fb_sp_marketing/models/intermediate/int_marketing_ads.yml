@@ -1,0 +1,11 @@
+version: 2
+
+models:
+  - name: int_marketing_ads
+    description: >
+      Facebook and Snapchat stacked into one table with the same columns
+      (union all). Adds the month of each row, looks up the monthly exchange
+      rate for its currency, and computes spend_usd. A row whose month has
+      no rate in the seed gets a NULL spend_usd, which the singular test
+      int_marketing_ads_missing_rate catches. Ephemeral: used only by
+      fct_marketing_spend.

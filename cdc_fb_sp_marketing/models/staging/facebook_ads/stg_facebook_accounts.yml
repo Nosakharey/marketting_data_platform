@@ -1,0 +1,24 @@
+version: 2
+models:
+  - name: stg_facebook_accounts
+    description: >
+      Facebook ad accounts, one row per account. The only place the billing
+      currency exists, so it is needed to convert spend to USD.
+
+    columns:
+      - name: account_id
+        description: Identifier of the ad account, assigned by Facebook. Not a bank account number.
+        data_tests: [unique, not_null]
+      - name: account_name
+        description: Label of the ad account. Can change, so never use it to join or group.
+      - name: currency
+        description: Currency the account is billed in, as an upper-case code (for example USD or EUR).
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['USD', 'EUR']
+      - name: account_created_at
+        description: When the ad account was created.
+      - name: account_updated_at
+        description: When the record was last changed.

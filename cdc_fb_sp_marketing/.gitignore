@@ -1,0 +1,20 @@
+# secrets - never commit
+secrets.sh
+.env
+*.env
+
+# dbt generated
+target/
+dbt_packages/
+logs/
+
+# python
+.venv/
+__pycache__/
+
+# elementary generated
+edr_target/
+
+# OS
+.DS_Store
+Thumbs.db.user.yml

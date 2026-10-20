@@ -1,0 +1,39 @@
+sources:
+  - name: snapchat_ads
+    database: bronze_dev
+    description: data from snapchat platform (static)
+    schema: snapchat_ads
+    config:
+      enabled: true
+      meta:
+        owner: "@nosadida"
+
+    tables:
+      - name: ads_stats
+        identifier: snapchat_ads_stats
+        description: >
+          Daily performance per ad and country: spend, impressions, clicks, date,
+          and the currency of the spend (ad_currency_code, present on every row).
+          One row per ad per day per country (checked: no duplicates on
+          ad_detail_id + ad_date + ad_country). All columns are loaded as text.
+
+      - name: ad_history
+        identifier: snapchat_ads_ad_history_new_ad_names
+        description: >
+          Descriptive details of Snapchat ads (the counterpart of the Facebook
+          ads table). A history table, so the same ad may appear in several
+          versions. TODO: list the columns and confirm the version column.
+
+      - name: ad_group_history
+        identifier: snapchat_ads_adgroup_history_new_ad_group_names
+        description: >
+          Descriptive details of Snapchat ad groups. A history table, so the
+          same ad group may appear in several versions.
+          TODO: list the columns and confirm the version column.
+
+      - name: campaign_history
+        identifier: snapchat_ads_campaign_history_new_campaign_names
+        description: >
+          Descriptive details of Snapchat campaigns. A history table, so the
+          same campaign may appear in several versions.
+          TODO: list the columns and confirm the version column.  

@@ -1,0 +1,16 @@
+version: 2
+
+models:
+  - name: stg_facebook_campaigns
+    description: >
+      Facebook campaigns, one row per campaign. A campaign is the overall goal
+      of the advertising and groups ad groups and ads.
+    columns:
+      - name: campaign_id
+        description: Identifier of the campaign. Unique in this model.
+        data_tests: [unique, not_null]
+      - name: campaign_name
+        description: Name of the campaign. Label only, not a key.
+      - name: campaign_updated_at
+        description: When the record was last changed.
+

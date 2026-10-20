@@ -1,0 +1,10 @@
+version: 2
+
+models:
+  - name: int_facebook_ads
+    description: >
+      Facebook daily performance, one row per ad per day. Takes the daily
+      stats and adds the ad details, the campaign name and the billing
+      currency of the account. Spend is still in the account's currency.
+      Facebook has no country, so ad_country is NULL here. Ephemeral: it is
+      never built as a table, only used inside int_marketing_ads.

@@ -1,0 +1,18 @@
+version: 2
+
+models:
+  - name: stg_facebook_ad_groups
+    description: >
+      Facebook ad groups (ad sets), one row per ad group. An ad group sits
+      inside a campaign and holds ads. It sets who sees the ads, the budget
+      and the schedule. The link to its campaign goes through stg_facebook_ads.
+    columns:
+      - name: ad_group_id
+        description: Identifier of the ad group. Unique in this model.
+        data_tests: [unique, not_null] 
+      - name: ad_group_name
+        description: Name of the ad group. Label only, not a key.
+      - name: ad_group_updated_at
+        description: When the record was last changed.
+
+

@@ -1,0 +1,56 @@
+models:
+  - name: fct_marketing_spend
+    description: >
+      One row per ad per day per country, for Facebook and Snapchat together,
+      with spend in USD. Built for analysts, BI tools and the AI agent.
+      To get CTR, CPC or CPM for a bigger group, sum clicks, impressions and
+      spend first and then divide. Do not average the per-row ratios.
+
+    columns:
+      - name: ad_key
+        description: Unique id of the row (source, ad id, date and country combined).
+        data_tests:
+          - unique
+          - not_null
+      - name: platform
+        description: Advertising platform, either facebook or snapchat.
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['facebook', 'snapchat']
+    
+      - name: spend_usd
+        description: Amount spent, converted to US dollars with the ECB monthly average rate.
+        data_tests:
+          - non_negative
+      - name: impressions
+        description: Number of times the ad was shown.
+        data_tests:
+          - non_negative
+      - name: clicks
+        description: Number of clicks on the ad. Empty when the platform did not report it.
+        data_tests:
+          - non_negative
+
+      - name: ad_date
+        description: Day the ad ran.
+      - name: account_id
+        description: Id of the ad account on the platform. An ad account is a billing workspace and not a customer.
+      - name: campaign_id
+        description: Id of the campaign on the platform.
+        data_tests: [not_null]
+      - name: campaign_name
+        description: Name of the campaign, taken from the platform.
+      - name: ad_id
+        description: Id of the ad on the platform.
+      - name: ad_name
+        description: Name of the ad.
+      - name: ad_country
+        description: Country the ad ran in. Only Snapchat reports it, so it is empty for Facebook rows.
+      - name: ctr
+        description: Click-through rate, clicks divided by impressions (0.02 means 2%). Empty when impressions are 0. Do not average across rows.
+      - name: cpc
+        description: Cost per click in USD, spend divided by clicks. Empty when clicks are 0 or not reported.
+      - name: cpm
+        description: Cost per thousand impressions in USD, spend divided by impressions times 1000. Empty when impressions are 0.

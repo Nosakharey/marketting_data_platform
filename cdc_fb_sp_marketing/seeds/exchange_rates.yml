@@ -1,0 +1,23 @@
+version: 2
+
+seeds:
+  - name: exchange_rates
+    description: >
+      Monthly exchange rates to USD (ECB, USD per 1 EUR). USD rows carry a
+      rate of 1. One row per month per currency. Updated by hand each month.
+    columns:
+      - name: rate_month
+        description: First day of the month the rate applies to.
+        data_tests: [not_null]
+      - name: currency
+        description: Currency the rate converts from (USD or EUR).
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['USD', 'EUR']
+      - name: rate_to_usd
+        description: Dollars for 1 unit of the currency. Always 1 for USD.
+        data_tests:
+          - not_null
+          - non_negative

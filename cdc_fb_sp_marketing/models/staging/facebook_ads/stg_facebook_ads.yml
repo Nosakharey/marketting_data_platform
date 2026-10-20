@@ -1,0 +1,34 @@
+version: 2
+models:
+  - name: stg_facebook_ads
+    description: >
+      Descriptive details of each Facebook ad, one row per ad. No performance
+      numbers. Links an ad to its campaign, ad group and account.
+    columns:
+      - name: ad_id
+        description: Identifier of the ad. Unique in this model.
+        data_tests: [unique, not_null]
+      - name: campaign_id
+        description: Campaign the ad belongs to. Joins to stg_facebook_campaigns.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_facebook_campaigns')
+                field: campaign_id
+      - name: ad_group_id
+        description: Ad group the ad sits in. Joins to stg_facebook_ad_groups.
+      - name: account_id
+        description: Ad account that owns the ad. Joins to stg_facebook_accounts.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_facebook_accounts')
+                field: account_id
+      - name: ad_name
+        description: Name of the ad (the creative). Label only, not a key.
+      - name: ad_status
+        description: Current state of the ad, in upper case (ACTIVE, PAUSED, ARCHIVED or DELETED).
+      - name: ad_updated_at
+        description: When the record was last changed.

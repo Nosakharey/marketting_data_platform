@@ -1,0 +1,26 @@
+version: 2
+
+models:
+  - name: stg_snapchat_ad_groups
+    description: >
+      One row per Snapchat ad group (264 rows). The raw history table keeps every
+      saved version of a group, so this model keeps only the newest version of
+      each group and drops the older ones.
+    columns:
+      - name: ad_group_id
+        description: Unique id of the group. Primary key of this table.
+        data_tests: [unique, not_null]
+      - name: campaign_id
+        description: >
+          The campaign the group belongs to. One campaign has many groups, so
+          this value repeats across rows.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_snapchat_campaigns')
+                field: campaign_id
+      - name: ad_group_name
+        description: Name given to the group (latest saved version).
+      - name: ad_group_updated_at
+        description: When this latest version of the group was saved.

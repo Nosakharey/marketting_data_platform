@@ -1,0 +1,9 @@
+version: 2
+
+models:
+  - name: int_snapchat_ads
+    description: >
+      Snapchat daily performance, one row per ad per day per country. Takes
+      the daily stats and adds the ad name and, through the ad group, the
+      campaign. Spend is in the currency carried on each row. Ephemeral: it
+      is never built as a table, only used inside int_marketing_ads.

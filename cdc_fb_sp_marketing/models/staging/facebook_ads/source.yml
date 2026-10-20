@@ -1,0 +1,47 @@
+sources:
+  - name: facebook_ads
+    database: bronze_dev
+    description: data from facebook platform (static)
+    schema: facebook_ads
+    config:
+      enabled: true
+      meta:
+        owner: "@nosadida"
+      #freshness:
+        #warn_after:
+          #count: 5
+          #period: day
+
+    
+    tables:
+      - name: accounts
+        identifier:  new_acccount_de_randomized
+        description: >
+          Advertiser ad accounts: id, name, account currency (ad_currency_code)
+          and created/updated timestamps. Facebook spend rows carry no currency,
+          so this table is the only source of it.
+
+      - name: ad_groups
+        identifier: new_adgroup_de_randomized
+        description: >
+          Ad groups (Facebook ad sets): id, name and last-updated timestamp.
+          An ad group sits inside a campaign and holds ads.
+
+      - name: ads
+        identifier: new_ads_de_randomized
+        description: >
+          Individual ads: id, name, status (ACTIVE, PAUSED, ARCHIVED, DELETED),
+          last-updated timestamp, and the ids of the campaign, ad group and
+          account the ad belongs to.
+
+      - name: campaigns
+        identifier: new_campaign_de_randomized
+        description: >
+          Campaigns: id, name and last-updated timestamp. A campaign groups
+          ad groups and ads.
+ 
+      - name: ads_stats
+        description: >
+          Daily performance per ad: spend (in the account currency), impressions,
+          clicks and date. Intended grain is one row per ad per day 
+          . Clicks and impressions can hold the text 'null'.

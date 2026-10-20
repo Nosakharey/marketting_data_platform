@@ -1,0 +1,27 @@
+version: 2
+
+models:
+  - name: stg_snapchat_ad_history
+    description: >
+      One row per Snapchat ad (2,513 rows). Lookup table: it says which group
+      each ad belongs to and gives the ad its name.
+    columns:
+      - name: ad_id
+        description: Unique id of the ad. Primary key of this table.
+        data_tests: [unique, not_null]
+      - name: ad_group_id
+        description: >
+          The group the ad belongs to. One group has many ads, so this value
+          repeats across rows.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_snapchat_ad_groups')
+                field: ad_group_id
+              config:
+                severity: warn
+      - name: ad_name
+        description: Name given to the ad.
+      - name: ad_updated_at
+        description: When the ad was last saved (a timestamp, not a run time).
