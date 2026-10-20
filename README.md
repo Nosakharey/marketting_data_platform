@@ -233,14 +233,16 @@ spending. The root cause (why the export is missing groups) is unknown and is st
 | Target | Catalog / schema | Used by | Auth |
 |---|---|---|---|
 | `dev` | `dev_godwin.dbt_godwin` | me, locally | personal token from `secrets.sh` (gitignored) |
-| `ci` | CI catalog/schema | GitHub Actions on pull requests | GitHub secrets |
-| `production` | production catalog/schema | GitHub Actions on merge to `main` | **Databricks Service Principal (OAuth M2M), no PAT** |
+| `ci` | `ci_godwin` | GitHub Actions on pull requests | GitHub secrets |
+| `production` | `prod_godwin.analytics` | GitHub Actions on merge to `main` | **Databricks Service Principal (OAuth M2M), no PAT** |
 
 - `profiles.yml` is committed but contains **no secrets**: everything comes from `env_var(...)`.
 - `secrets.sh`, `.env`, `target/`, `logs/` and `.venv/` are gitignored.
 - The production service principal is granted only what it needs (see [`docs/grants.sql`](docs/grants.sql)): use the
   production catalog, create and write in its schema, and read the bronze data. Analysts get read-only access to the marts.
 - Nobody edits production tables by hand; only merged, tested code reaches them.
+- **Verified:** `dbt build --target production` ran as the service principal (OAuth, no PAT) into `prod_godwin.analytics`: PASS=99, WARN=1 (the known Snapchat warning), ERROR=0.
+- **Verified:** `dbt build --target production` ran as the service principal (OAuth, no PAT) into `prod_godwin.analytics`: PASS=99, WARN=1 (the known Snapchat warning), ERROR=0.
 
 ## 13. CI/CD
 

@@ -8,13 +8,10 @@ jobs:
   dbt-prod:
     runs-on: ubuntu-latest
     env:
-      DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
-      DATABRICKS_HTTP_PATH: ${{ secrets.DATABRICKS_HTTP_PATH }}
       # Service Principal (OAuth machine-to-machine). No personal access token.
-      DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_SP_CLIENT_ID }}
-      DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_SP_CLIENT_SECRET }}
-      PROD_CATALOG: ${{ secrets.PROD_CATALOG }}
-      PROD_SCHEMA: ${{ secrets.PROD_SCHEMA }}
+      DBX_ID_APPLICATION_ID: ${{ secrets.DBX_ID_APPLICATION_ID }}
+      DBX_SECRET: ${{ secrets.DBX_SECRET }}
+      DEV_SCHEMA: analytics
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5

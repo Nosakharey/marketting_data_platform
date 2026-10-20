@@ -8,10 +8,8 @@ jobs:
   dbt-ci:
     runs-on: ubuntu-latest
     env:
-      DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
-      DATABRICKS_HTTP_PATH: ${{ secrets.DATABRICKS_HTTP_PATH }}
-      DATABRICKS_PAT_TOKEN: ${{ secrets.DATABRICKS_CI_TOKEN }}
-      DEV_CATALOG: ${{ secrets.CI_CATALOG }}
+      DBX_ID_APPLICATION_ID: ${{ secrets.DBX_ID_APPLICATION_ID }}
+      DBX_SECRET: ${{ secrets.DBX_SECRET }}
       DEV_SCHEMA: ci_pr_${{ github.event.number }}
     steps:
       - uses: actions/checkout@v4
