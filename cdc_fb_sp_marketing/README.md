@@ -121,7 +121,7 @@ and turned it into permanent tests.
 |---|---|---|
 | Grain of the final table | per ad per day, or per campaign per day | **Per ad, per day, per country.** Campaign totals can always be summed up later; ad-level detail can never be recovered from a summary. |
 | Snapchat `country` | keep, or sum it away | **Keep it** (Facebook rows get NULL). Dropping it destroys information the analysts may need, and Facebook may add it later. |
-| USD vs EUR | leave unconverted with a currency column, or convert | **Convert to USD** with a monthly ECB rate seed, and keep the original currency and amount. One comparable `spend_usd` makes the platforms comparable. |
+| USD vs EUR | leave unconverted with a currency column, or convert | **Convert to USD** with a monthly ECB rate seed, so every platform reports one comparable `spend_usd`. One comparable `spend_usd` makes the platforms comparable. |
 | Missing clicks/impressions | set to 0, or keep NULL | **Keep NULL** (see section 4). |
 | Fact vs dimensions | star schema or one wide table | **One wide fact table.** Two sources and few attributes: one table is the simplest thing for analysts, BI and an AI agent to query. |
 | Surrogate key | composite key, or hash | **`ad_key`** built from date, country, ad_id and source, tested unique. |
