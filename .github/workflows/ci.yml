@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  dbt-ci:
+    runs-on: ubuntu-latest
+    env:
+      DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+      DATABRICKS_HTTP_PATH: ${{ secrets.DATABRICKS_HTTP_PATH }}
+      DATABRICKS_PAT_TOKEN: ${{ secrets.DATABRICKS_CI_TOKEN }}
+      DEV_CATALOG: ${{ secrets.CI_CATALOG }}
+      DEV_SCHEMA: ci_pr_${{ github.event.number }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync
+      - name: Install dbt packages
+        run: uv run dbt deps --project-dir cdc_fb_sp_marketing --profiles-dir cdc_fb_sp_marketing
+      - name: Parse
+        run: uv run dbt parse --project-dir cdc_fb_sp_marketing --profiles-dir cdc_fb_sp_marketing --target ci
+      - name: Build and test
+        run: uv run dbt build --project-dir cdc_fb_sp_marketing --profiles-dir cdc_fb_sp_marketing --target ci

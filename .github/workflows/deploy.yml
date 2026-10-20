@@ -1,0 +1,27 @@
+name: Deploy to production
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  dbt-prod:
+    runs-on: ubuntu-latest
+    env:
+      DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+      DATABRICKS_HTTP_PATH: ${{ secrets.DATABRICKS_HTTP_PATH }}
+      # Service Principal (OAuth machine-to-machine). No personal access token.
+      DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_SP_CLIENT_ID }}
+      DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_SP_CLIENT_SECRET }}
+      PROD_CATALOG: ${{ secrets.PROD_CATALOG }}
+      PROD_SCHEMA: ${{ secrets.PROD_SCHEMA }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync
+      - name: Install dbt packages
+        run: uv run dbt deps --project-dir cdc_fb_sp_marketing --profiles-dir cdc_fb_sp_marketing
+      - name: Build and test in production
+        run: uv run dbt build --project-dir cdc_fb_sp_marketing --profiles-dir cdc_fb_sp_marketing --target production
+      - name: Generate docs
+        run: uv run dbt docs generate --static --project-dir cdc_fb_sp_marketing --profiles-dir cdc_fb_sp_marketing --target production

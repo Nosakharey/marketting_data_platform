@@ -17,4 +17,6 @@ edr_target/
 
 # OS
 .DS_Store
-Thumbs.db.user.yml
+Thumbs.db
+
+.user.yml
